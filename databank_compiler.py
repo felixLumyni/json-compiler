@@ -1,5 +1,5 @@
 '''
-# JSON compiler v0.92 by Lumyni, requires https://www.python.org/
+# JSON compiler v0.93 by Lumyni, requires https://www.python.org/
 # Meant for C.R's "Databank Project"
 # Messes with files, only modify if you know what you are doing!
 '''
@@ -8,6 +8,8 @@ import os, importlib, sys, locale, ctypes, json
 from datetime import datetime
 from tkinter import messagebox
 from tkinter import filedialog
+from importlib import util
+from importlib import machinery
 
 def import_required_modules(modules):
     for (module,link,targetversion) in modules:
@@ -246,7 +248,7 @@ def settings_save(rootdir):
 if __name__ == "__main__":
     required_modules = [
         #(NAME, LINK, TARGET_VERSION),
-        ('customtkinter', ': https://github.com/TomSchimansky/CustomTkinter/tags', '503')
+        ('customtkinter', ': https://github.com/TomSchimansky/CustomTkinter/tags', '513')
     ]
     import_required_modules(required_modules)
     sys.dont_write_bytecode = True
