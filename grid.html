@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Databank Alpha1</title>
+    <script
+        src="https://code.jquery.com/jquery-3.6.0.slim.min.js"
+        integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="
+        crossorigin="anonymous"></script>
+    <style>
+        *{
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: monospace;
+            border-radius: 5px;
+        }
+        *::-webkit-scrollbar{
+            width: 12px;
+            visibility: hidden;
+        }
+
+        *::-webkit-scrollbar-thumb{
+            border-radius: 10px;
+            background-color: rgba(0,0,0,0.2);
+        }
+        
+        *::-webkit-scrollbar-corner{
+            background: rgba(0,0,0,0);
+        }
+        html, body{
+            background-color: #8FE3CF;
+            color: #fff
+        }
+        .wrapper{
+            background-color: #256D85;
+            max-width: 650px;
+            height: calc(100vh - 8rem);
+            margin: 4rem auto;
+            overflow: auto;
+            border-radius: 0.5rem;
+            box-shadow: 0px 2px 6px #222;
+            overflow: hidden;
+        }
+        .wrapper header{
+            width: 100%;
+            max-width: 650px;
+            border-radius: 0.5rem;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 7rem;
+        }
+        .wrapper header div{
+            display: flex;
+        }
+        .wrapper header input{
+            height: 1.5rem;
+        }
+        .wrapper main{
+            display: grid;
+            grid-template-columns: auto auto auto;
+            row-gap: 2rem;
+            justify-content: space-between;
+            height: calc(100% - 10rem);
+            width: 100%;
+            padding: 0 2rem;
+            overflow-y: scroll;
+        }
+        .wrapper main div{
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            width: 13rem;
+            height: 13rem;
+            box-shadow: 0px 2px 6px #222;
+        }
+        .wrapper main div img{
+            height: calc(100% - 2rem);
+            background-color: #aaa;
+            object-fit: cover;
+        }
+        .wrapper main div h2{
+            background-color: #002B5B;
+            text-align: center;
+            height: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+            <div class="selector">
+                <h1>Aa</h1>
+            </div>
+            <input id="search" type="text">
+        </header>
+        <main id="mainGrid">
+            
+        </main>
+    </div>
+
+    <script>
+        let obj = {}
+
+        fetch("databank_scan.json")
+            .then(response => response.json())
+            .then(json => {
+                obj = json
+                render(obj, '')
+            });
+
+        $('#search').keyup(() => {
+            let value = $('#search').val().trim() !== '' ? $('#search').val().trim() : ''
+            render(obj, value)
+        })
+        
+        function render(json, search){
+            $('#mainGrid').html('')
+            const data = json.entries
+            const props = json.properties
+            for(let i = 0; i < data.length; i++){
+                if(data[i].Name.toLowerCase().includes(search.toLowerCase())){
+                    $(`
+                        <div>
+                            <img style="object-fit: fill;" src="${props[0].bankname}\\${data[i].id}_${data[i].filename}\\${data[i].ImageName ? data[i].ImageName : 'image.png'}" alt="${data[i].filename}">
+                            <h2>${data[i].Name}</h2>
+                        </div>
+                    `).appendTo('#mainGrid')
+                }
+            }
+        }
+    </script>
+</body>
+</html>
